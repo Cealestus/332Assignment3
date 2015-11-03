@@ -1,4 +1,10 @@
-
+/*
+ * Counters
+ * */
+int NumBays;
+int numDA;
+int numDB;
+int numDO;
 
 
 

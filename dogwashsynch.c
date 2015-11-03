@@ -1,9 +1,5 @@
 #include "dogwashsynch.h"
-#include <pthread.h>
-
-
-int NumBays;
-
+#include <semaphore.h>
 
 /*
  * This function is called to initialize any variables your
@@ -13,9 +9,13 @@ int NumBays;
 int
 dogwash_init(int numbays) {
 
+	NumBays = numbays;
+	numDA = 0;
+	numDB = 0;
+	numDO = 0;
 
-
-	}
+	return 0;
+}
 
 /*
  * This function is called when a new dog (of type dogtype)
@@ -24,7 +24,7 @@ dogwash_init(int numbays) {
  */
 int 
 newdog(dogtype dog) {
-	 
+	return 0;	
 }
 
 
@@ -36,7 +36,7 @@ newdog(dogtype dog) {
  */
 int 
 dogdone(dogtype dog) {
-
+	return 0;
 }
 
 
@@ -47,8 +47,5 @@ dogdone(dogtype dog) {
  */
 int 
 dogwash_done() {
-
+	return 0;
 }
-
-
-
