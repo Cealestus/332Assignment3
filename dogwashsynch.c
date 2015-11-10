@@ -1,5 +1,77 @@
+#include <pthread.h>
 #include "dogwashsynch.h"
 #include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+/*Semaphores*/
+sem_t SA;
+sem_t SB;
+sem_t SBAYS;
+sem_t SNUMBAYS;
+
+
+/*
+ * Function to handle dogs of type A
+ * */
+void *DogAThread(void *arg){
+	printf("In DogA\n");
+	sem_wait(&SA);
+	numDA++;
+	if(numDA == 1){
+		sem_wait(&SBAYS);
+	}
+	sem_post(&SA);
+	sem_wait(&SNUMBAYS);
+	while(NumBays == 0){
+		sem_post(&SNUMBAYS);
+		sem_wait(&SNUMBAYS);
+	}
+	NumBays--;
+	sem_post(&SNUMBAYS);
+	/*wait()*/
+	sem_wait(&SNUMBAYS);
+	NumBays++;
+	sem_post(&SNUMBAYS);
+	sem_wait(&SA);
+	numDA--;
+	if(numDA == 0){
+		sem_post(&SBAYS);
+	}
+	sem_post(&SA);
+	return 0;
+}
+
+/*
+ * Function to handle dogs of type B
+ */
+void *DogBThread(void *arg){
+	printf("In DogB\n");
+	sem_wait(&SB);
+	numDB++;
+	if(numDB == 1){
+		sem_wait(&SBAYS);
+	}
+	sem_post(&SB);
+	sem_wait(&SNUMBAYS);
+	while(NumBays == 0){
+		sem_post(&SNUMBAYS);
+		sem_wait(&SNUMBAYS);
+	}
+	NumBays--;
+	sem_post(&SNUMBAYS);
+	/*wait()*/
+	sem_wait(&SNUMBAYS);
+	NumBays++;
+	sem_post(&SNUMBAYS);
+	sem_wait(&SB);
+	numDB--;
+	if(numDB == 0){
+		sem_post(&SBAYS);
+	}
+	sem_post(&SB);
+	return 0;
+}
 
 /*
  * This function is called to initialize any variables your
