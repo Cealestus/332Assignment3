@@ -3,6 +3,7 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 /*Semaphores*/
 sem_t SA;
@@ -30,6 +31,9 @@ void *DogAThread(void *arg){
 	NumBays--;
 	sem_post(&SNUMBAYS);
 	/*wait()*/
+	printf("Sleeping dogA for 2 seconds\n");
+	sleep(2);
+	printf("Done sleeping for 2 seconds\n");
 	sem_wait(&SNUMBAYS);
 	NumBays++;
 	sem_post(&SNUMBAYS);
@@ -74,6 +78,25 @@ void *DogBThread(void *arg){
 }
 
 /*
+ * Function to handle dogs of type O
+ */
+void *DogOThread(void *arg){
+	printf("In DogO\n");
+	sem_wait(&SNUMBAYS);
+	while(NumBays == 0){
+		sem_post(&SNUMBAYS);
+		sem_wait(&SNUMBAYS);
+	}
+	NumBays--;
+	sem_post(&SNUMBAYS);
+	/*wait()*/
+	sem_wait(&SNUMBAYS);
+	NumBays++;
+	sem_post(&SNUMBAYS);
+	return 0;
+}
+
+/*
  * This function is called to initialize any variables your
  * solution requires. It takes as its argument the number of wash bays in the dog wash facility. The
  * function should return 0 on success and -1 for a failure return.
@@ -86,6 +109,11 @@ dogwash_init(int numbays) {
 	numDB = 0;
 	numDO = 0;
 
+	sem_init(&SA, 0, 1);
+	sem_init(&SB, 0, 1);
+	sem_init(&SBAYS, 0, 1);
+	sem_init(&SNUMBAYS, 0, 1);
+
 	return 0;
 }
 
@@ -96,6 +124,21 @@ dogwash_init(int numbays) {
  */
 int 
 newdog(dogtype dog) {
+	if(dog == DA){
+		pthread_t DogA_Thread;
+		printf("Creating DogA\n");
+		pthread_create(&DogA_Thread, NULL, DogAThread, NULL);
+	}
+	else if(dog == DB){
+		pthread_t DogB_Thread;
+		printf("Creating DogB\n");
+		pthread_create(&DogB_Thread, NULL, DogBThread, NULL);
+	}
+	else if(dog == DO){
+		pthread_t DogO_Thread;
+		printf("Creating DogO\n");
+		pthread_create(&DogO_Thread, NULL, DogOThread, NULL);
+	}
 	return 0;	
 }
 

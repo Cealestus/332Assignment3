@@ -1,12 +1,18 @@
-#include <pthread.h>
 #include "dogwashsynch.h"
-#include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <unistd.h>
 
 
 int main(int argc, char* argv[]){
-	printf("In main after creation of thread\n");
+	dogtype dogA = DA;
+	dogtype dogB = DB;
+	dogtype dogO = DO;
+
+	dogwash_init(2);
+	newdog(dogA);
+	newdog(dogB);
+	newdog(dogO);
+	sleep(4);
 	return 0;
 }
