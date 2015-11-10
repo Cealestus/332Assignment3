@@ -30,19 +30,6 @@ void *DogAThread(void *arg){
 	}
 	NumBays--;
 	sem_post(&SNUMBAYS);
-	/*wait()*/
-	printf("Sleeping dogA for 2 seconds\n");
-	sleep(2);
-	printf("Done sleeping for 2 seconds\n");
-	sem_wait(&SNUMBAYS);
-	NumBays++;
-	sem_post(&SNUMBAYS);
-	sem_wait(&SA);
-	numDA--;
-	if(numDA == 0){
-		sem_post(&SBAYS);
-	}
-	sem_post(&SA);
 	return 0;
 }
 
@@ -64,16 +51,6 @@ void *DogBThread(void *arg){
 	}
 	NumBays--;
 	sem_post(&SNUMBAYS);
-	/*wait()*/
-	sem_wait(&SNUMBAYS);
-	NumBays++;
-	sem_post(&SNUMBAYS);
-	sem_wait(&SB);
-	numDB--;
-	if(numDB == 0){
-		sem_post(&SBAYS);
-	}
-	sem_post(&SB);
 	return 0;
 }
 
@@ -88,10 +65,6 @@ void *DogOThread(void *arg){
 		sem_wait(&SNUMBAYS);
 	}
 	NumBays--;
-	sem_post(&SNUMBAYS);
-	/*wait()*/
-	sem_wait(&SNUMBAYS);
-	NumBays++;
 	sem_post(&SNUMBAYS);
 	return 0;
 }
@@ -151,6 +124,39 @@ newdog(dogtype dog) {
  */
 int 
 dogdone(dogtype dog) {
+	if(dog == DA){
+		printf("Dogdone A\n");
+		sem_wait(&SNUMBAYS);
+		NumBays++;
+		sem_post(&SNUMBAYS);
+		sem_wait(&SA);
+		numDA--;
+		if(numDA == 0){
+			sem_post(&SBAYS);
+		}
+		sem_post(&SA);
+	}
+	else if(dog == DB){
+		printf("Dogdone B\n");
+		sem_wait(&SNUMBAYS);
+		NumBays++;
+		sem_post(&SNUMBAYS);
+		sem_wait(&SB);
+		numDB--;
+		if(numDB == 0){
+			sem_post(&SBAYS);
+		}
+		sem_post(&SB);
+	}
+	else if(dog == DO){
+		printf("Dogdone O\n");
+		sem_wait(&SNUMBAYS);
+		NumBays++;
+		sem_post(&SNUMBAYS);
+	}
+	else{
+		printf("ERROR, Not one of the 3 dog types\n");
+	}
 	return 0;
 }
 
