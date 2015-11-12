@@ -89,3 +89,22 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+bput(char *tag, char *message){
+	return 0;
+}
+
+int
+put(char *tag, char *message){
+	return 0;
+}
+
+int bget(char *tag, char *buf){
+	return 0;
+}
+
+int
+get(char *tag, char *buf){
+	return 0;
+}
