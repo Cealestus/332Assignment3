@@ -83,19 +83,19 @@ dogwash_init(int numbays) {
 	numDB = 0;
 	numDO = 0;
 
-	check = sem_init(&SA, 0, 1);
+	check = pthread_mutex_init(&SA, NULL);
 	if(check != 0){
 		return -1;
 	}
-	check = sem_init(&SB, 0, 1);
+	check = pthread_mutex_init(&SB, NULL);
 	if(check != 0){
 		return -1;
 	}
-	check = sem_init(&SBAYS, 0, 1);
+	check = pthread_mutex_init(&SBAYS, NULL);
 	if(check != 0){
 		return -1;
 	}
-	check = sem_init(&SNUMBAYS, 0, 1);
+	check = pthread_mutex_init(&SNUMBAYS, NULL);
 	if(check != 0){
 		return -1;
 	}
