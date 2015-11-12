@@ -21,15 +21,15 @@ void *DogAThread(void *arg){
 	if(numDA == 1){
 		sem_wait(&SBAYS);
 	}
-	sem_post(&SA);
+	pthread_mutex_unlock(&SA);
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
-		sem_post(&SNUMBAYS);
+		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
 	}
 	NumBays--;
 	printf("In DogA\n");
-	sem_post(&SNUMBAYS);
+	pthread_mutex_unlock(&SNUMBAYS);
 	return 0;
 }
 
@@ -42,15 +42,15 @@ void *DogBThread(void *arg){
 	if(numDB == 1){
 		sem_wait(&SBAYS);
 	}
-	sem_post(&SB);
+	pthread_mutex_unlock(&SB);
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
-		sem_post(&SNUMBAYS);
+		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
 	}
 	NumBays--;
 	printf("In DogB\n");
-	sem_post(&SNUMBAYS);
+	pthread_mutex_unlock(&SNUMBAYS);
 	return 0;
 }
 
@@ -60,12 +60,12 @@ void *DogBThread(void *arg){
 void *DogOThread(void *arg){
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
-		sem_post(&SNUMBAYS);
+		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
 	}
 	NumBays--;
 	printf("In DogO\n");
-	sem_post(&SNUMBAYS);
+	pthread_mutex_unlock(&SNUMBAYS);
 	return 0;
 }
 
@@ -165,31 +165,31 @@ dogdone(dogtype dog) {
 		printf("Dogdone A\n");
 		sem_wait(&SNUMBAYS);
 		NumBays++;
-		sem_post(&SNUMBAYS);
+		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SA);
 		numDA--;
 		if(numDA == 0){
-			sem_post(&SBAYS);
+			pthread_mutex_unlock(&SBAYS);
 		}
-		sem_post(&SA);
+		pthread_mutex_unlock(&SA);
 	}
 	else if(dog == DB){
 		printf("Dogdone B\n");
 		sem_wait(&SNUMBAYS);
 		NumBays++;
-		sem_post(&SNUMBAYS);
+		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SB);
 		numDB--;
 		if(numDB == 0){
-			sem_post(&SBAYS);
+			pthread_mutex_unlock(&SBAYS);
 		}
-		sem_post(&SB);
+		pthread_mutex_unlock(&SB);
 	}
 	else if(dog == DO){
 		printf("Dogdone O\n");
 		sem_wait(&SNUMBAYS);
 		NumBays++;
-		sem_post(&SNUMBAYS);
+		pthread_mutex_unlock(&SNUMBAYS);
 	}
 	else{
 		return -1;
