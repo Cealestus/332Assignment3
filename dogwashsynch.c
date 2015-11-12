@@ -76,16 +76,28 @@ void *DogOThread(void *arg){
  */
 int
 dogwash_init(int numbays) {
-
+	int check;
 	NumBays = numbays;
 	numDA = 0;
 	numDB = 0;
 	numDO = 0;
 
-	sem_init(&SA, 0, 1);
-	sem_init(&SB, 0, 1);
-	sem_init(&SBAYS, 0, 1);
-	sem_init(&SNUMBAYS, 0, 1);
+	check = sem_init(&SA, 0, 1);
+	if(check != 0){
+		return -1;
+	}
+	check = sem_init(&SB, 0, 1);
+	if(check != 0){
+		return -1;
+	}
+	check = sem_init(&SBAYS, 0, 1);
+	if(check != 0){
+		return -1;
+	}
+	check = sem_init(&SNUMBAYS, 0, 1);
+	if(check != 0){
+		return -1;
+	}
 
 	return 0;
 }
@@ -97,25 +109,47 @@ dogwash_init(int numbays) {
  */
 int 
 newdog(dogtype dog) {
+	int check;
 	if(dog == DA){
 		pthread_t DogA_Thread;
 		printf("Creating DogA\n");
-		pthread_create(&DogA_Thread, NULL, DogAThread, NULL);
-		pthread_join(DogA_Thread, NULL);
+		check = pthread_create(&DogA_Thread, NULL, DogAThread, NULL);
+		if(check != 0){
+			return -1;
+		}
+		check = pthread_join(DogA_Thread, NULL);
+		if(check != 0){
+			return -1;
+		}
+		return 0;
 	}
 	else if(dog == DB){
 		pthread_t DogB_Thread;
 		printf("Creating DogB\n");
-		pthread_create(&DogB_Thread, NULL, DogBThread, NULL);
-		pthread_join(DogB_Thread, NULL);
+		check = pthread_create(&DogB_Thread, NULL, DogBThread, NULL);
+		if(check != 0){
+			return -1;
+		}
+		check = pthread_join(DogB_Thread, NULL);
+		if(check != 0){
+			return -1;
+		}
+		return 0;
 	}
 	else if(dog == DO){
 		pthread_t DogO_Thread;
 		printf("Creating DogO\n");
-		pthread_create(&DogO_Thread, NULL, DogOThread, NULL);
-		pthread_join(DogO_Thread, NULL);
+		check = pthread_create(&DogO_Thread, NULL, DogOThread, NULL);
+		if(check != 0){
+			return -1;
+		}
+		check = pthread_join(DogO_Thread, NULL);
+		if(check != 0){
+			return -1;
+		}
+		return 0;
 	}
-	return 0;	
+	return -1;	
 }
 
 
@@ -158,7 +192,7 @@ dogdone(dogtype dog) {
 		sem_post(&SNUMBAYS);
 	}
 	else{
-		printf("ERROR, Not one of the 3 dog types\n");
+		return -1;
 	}
 	return 0;
 }
@@ -171,5 +205,9 @@ dogdone(dogtype dog) {
  */
 int 
 dogwash_done() {
+	numDA = 0;
+	numDB = 0;
+	numDO = 0;
+
 	return 0;
 }
