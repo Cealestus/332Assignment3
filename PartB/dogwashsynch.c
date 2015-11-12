@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-/*Semaphores*/
+/* Locks */
 pthread_mutex_t SA;
 pthread_mutex_t SB;
 pthread_mutex_t SBAYS;
@@ -20,19 +20,16 @@ void *DogAThread(void *arg){
 	if(numDA == 1){
 		sem_wait(&SBAYS);
 	}
-<<<<<<< HEAD
 	pthread_mutex_unlock(&SA);
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
-=======
 	sem_post(&SA);
 	pthread_mutex_lock(&SNUMBAYS);
 	while(NumBays == 0){
 		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SNUMBAYS);
->>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 	}
 	NumBays--;
 	printf("In DogA\n");
@@ -49,19 +46,16 @@ void *DogBThread(void *arg){
 	if(numDB == 1){
 		pthread_mutex_lock(&SBAYS);
 	}
-<<<<<<< HEAD
 	pthread_mutex_unlock(&SB);
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
-=======
 	sem_post(&SB);
 	pthread_mutex_lock(&SNUMBAYS);
 	while(NumBays == 0){
 		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SNUMBAYS);
->>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 	}
 	NumBays--;
 	printf("In DogB\n");
@@ -75,13 +69,10 @@ void *DogBThread(void *arg){
 void *DogOThread(void *arg){
 	pthread_mutex_lock(&SNUMBAYS);
 	while(NumBays == 0){
-<<<<<<< HEAD
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
-=======
 		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SNUMBAYS);
->>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 	}
 	NumBays--;
 	printf("In DogO\n");
@@ -185,13 +176,10 @@ dogdone(dogtype dog) {
 		printf("Dogdone A\n");
 		pthread_mutex_lock(&SNUMBAYS);
 		NumBays++;
-<<<<<<< HEAD
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SA);
-=======
 		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SA);
->>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 		numDA--;
 		if(numDA == 0){
 			pthread_mutex_unlock(&SBAYS);
@@ -202,13 +190,11 @@ dogdone(dogtype dog) {
 		printf("Dogdone B\n");
 		pthread_mutex_lock(&SNUMBAYS);
 		NumBays++;
-<<<<<<< HEAD
+
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SB);
-=======
 		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SB);
->>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 		numDB--;
 		if(numDB == 0){
 			pthread_mutex_unlock(&SBAYS);
