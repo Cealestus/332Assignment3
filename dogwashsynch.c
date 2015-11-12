@@ -16,7 +16,6 @@ sem_t SNUMBAYS;
  * Function to handle dogs of type A
  * */
 void *DogAThread(void *arg){
-	printf("In DogA\n");
 	sem_wait(&SA);
 	numDA++;
 	if(numDA == 1){
@@ -29,6 +28,7 @@ void *DogAThread(void *arg){
 		sem_wait(&SNUMBAYS);
 	}
 	NumBays--;
+	printf("In DogA\n");
 	sem_post(&SNUMBAYS);
 	return 0;
 }
@@ -37,7 +37,6 @@ void *DogAThread(void *arg){
  * Function to handle dogs of type B
  */
 void *DogBThread(void *arg){
-	printf("In DogB\n");
 	sem_wait(&SB);
 	numDB++;
 	if(numDB == 1){
@@ -50,6 +49,7 @@ void *DogBThread(void *arg){
 		sem_wait(&SNUMBAYS);
 	}
 	NumBays--;
+	printf("In DogB\n");
 	sem_post(&SNUMBAYS);
 	return 0;
 }
@@ -58,13 +58,13 @@ void *DogBThread(void *arg){
  * Function to handle dogs of type O
  */
 void *DogOThread(void *arg){
-	printf("In DogO\n");
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
 		sem_post(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
 	}
 	NumBays--;
+	printf("In DogO\n");
 	sem_post(&SNUMBAYS);
 	return 0;
 }
@@ -101,16 +101,19 @@ newdog(dogtype dog) {
 		pthread_t DogA_Thread;
 		printf("Creating DogA\n");
 		pthread_create(&DogA_Thread, NULL, DogAThread, NULL);
+		pthread_join(DogA_Thread, NULL);
 	}
 	else if(dog == DB){
 		pthread_t DogB_Thread;
 		printf("Creating DogB\n");
 		pthread_create(&DogB_Thread, NULL, DogBThread, NULL);
+		pthread_join(DogB_Thread, NULL);
 	}
 	else if(dog == DO){
 		pthread_t DogO_Thread;
 		printf("Creating DogO\n");
 		pthread_create(&DogO_Thread, NULL, DogOThread, NULL);
+		pthread_join(DogO_Thread, NULL);
 	}
 	return 0;	
 }
