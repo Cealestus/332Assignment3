@@ -1,31 +1,38 @@
 #include <pthread.h>
 #include "dogwashsynch.h"
-#include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 /*Semaphores*/
-sem_t SA;
-sem_t SB;
-sem_t SBAYS;
-sem_t SNUMBAYS;
+pthread_mutex_t SA;
+pthread_mutex_t SB;
+pthread_mutex_t SBAYS;
+pthread_mutex_t SNUMBAYS;
 
 
 /*
  * Function to handle dogs of type A
  * */
 void *DogAThread(void *arg){
-	sem_wait(&SA);
+	pthread_mutex_ock(&SA);
 	numDA++;
 	if(numDA == 1){
 		sem_wait(&SBAYS);
 	}
+<<<<<<< HEAD
 	pthread_mutex_unlock(&SA);
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
+=======
+	sem_post(&SA);
+	pthread_mutex_lock(&SNUMBAYS);
+	while(NumBays == 0){
+		sem_post(&SNUMBAYS);
+		pthread_mutex_lock(&SNUMBAYS);
+>>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 	}
 	NumBays--;
 	printf("In DogA\n");
@@ -37,16 +44,24 @@ void *DogAThread(void *arg){
  * Function to handle dogs of type B
  */
 void *DogBThread(void *arg){
-	sem_wait(&SB);
+	pthread_mutex_lock(&SB);
 	numDB++;
 	if(numDB == 1){
-		sem_wait(&SBAYS);
+		pthread_mutex_lock(&SBAYS);
 	}
+<<<<<<< HEAD
 	pthread_mutex_unlock(&SB);
 	sem_wait(&SNUMBAYS);
 	while(NumBays == 0){
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
+=======
+	sem_post(&SB);
+	pthread_mutex_lock(&SNUMBAYS);
+	while(NumBays == 0){
+		sem_post(&SNUMBAYS);
+		pthread_mutex_lock(&SNUMBAYS);
+>>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 	}
 	NumBays--;
 	printf("In DogB\n");
@@ -58,10 +73,15 @@ void *DogBThread(void *arg){
  * Function to handle dogs of type O
  */
 void *DogOThread(void *arg){
-	sem_wait(&SNUMBAYS);
+	pthread_mutex_lock(&SNUMBAYS);
 	while(NumBays == 0){
+<<<<<<< HEAD
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SNUMBAYS);
+=======
+		sem_post(&SNUMBAYS);
+		pthread_mutex_lock(&SNUMBAYS);
+>>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 	}
 	NumBays--;
 	printf("In DogO\n");
@@ -163,10 +183,15 @@ int
 dogdone(dogtype dog) {
 	if(dog == DA){
 		printf("Dogdone A\n");
-		sem_wait(&SNUMBAYS);
+		pthread_mutex_lock(&SNUMBAYS);
 		NumBays++;
+<<<<<<< HEAD
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SA);
+=======
+		sem_post(&SNUMBAYS);
+		pthread_mutex_lock(&SA);
+>>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 		numDA--;
 		if(numDA == 0){
 			pthread_mutex_unlock(&SBAYS);
@@ -175,10 +200,15 @@ dogdone(dogtype dog) {
 	}
 	else if(dog == DB){
 		printf("Dogdone B\n");
-		sem_wait(&SNUMBAYS);
+		pthread_mutex_lock(&SNUMBAYS);
 		NumBays++;
+<<<<<<< HEAD
 		pthread_mutex_unlock(&SNUMBAYS);
 		sem_wait(&SB);
+=======
+		sem_post(&SNUMBAYS);
+		pthread_mutex_lock(&SB);
+>>>>>>> 9cc2e846ddb6e6d2083a8106255875982836600a
 		numDB--;
 		if(numDB == 0){
 			pthread_mutex_unlock(&SBAYS);
@@ -187,7 +217,7 @@ dogdone(dogtype dog) {
 	}
 	else if(dog == DO){
 		printf("Dogdone O\n");
-		sem_wait(&SNUMBAYS);
+		pthread_mutex_lock(&SNUMBAYS);
 		NumBays++;
 		pthread_mutex_unlock(&SNUMBAYS);
 	}
