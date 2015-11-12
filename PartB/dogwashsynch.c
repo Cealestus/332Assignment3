@@ -15,20 +15,16 @@ pthread_mutex_t SNUMBAYS;
  * Function to handle dogs of type A
  * */
 void *DogAThread(void *arg){
-	pthread_mutex_ock(&SA);
+	pthread_mutex_lock(&SA);
 	numDA++;
 	if(numDA == 1){
-		sem_wait(&SBAYS);
+		pthread_mutex_lock(&SBAYS);
 	}
 	pthread_mutex_unlock(&SA);
-	sem_wait(&SNUMBAYS);
+	pthread_mutex_lock(&SNUMBAYS);
+
 	while(NumBays == 0){
 		pthread_mutex_unlock(&SNUMBAYS);
-		sem_wait(&SNUMBAYS);
-	sem_post(&SA);
-	pthread_mutex_lock(&SNUMBAYS);
-	while(NumBays == 0){
-		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SNUMBAYS);
 	}
 	NumBays--;
@@ -47,14 +43,10 @@ void *DogBThread(void *arg){
 		pthread_mutex_lock(&SBAYS);
 	}
 	pthread_mutex_unlock(&SB);
-	sem_wait(&SNUMBAYS);
+	pthread_mutex_lock(&SNUMBAYS);
+
 	while(NumBays == 0){
 		pthread_mutex_unlock(&SNUMBAYS);
-		sem_wait(&SNUMBAYS);
-	sem_post(&SB);
-	pthread_mutex_lock(&SNUMBAYS);
-	while(NumBays == 0){
-		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SNUMBAYS);
 	}
 	NumBays--;
@@ -70,8 +62,6 @@ void *DogOThread(void *arg){
 	pthread_mutex_lock(&SNUMBAYS);
 	while(NumBays == 0){
 		pthread_mutex_unlock(&SNUMBAYS);
-		sem_wait(&SNUMBAYS);
-		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SNUMBAYS);
 	}
 	NumBays--;
@@ -177,8 +167,6 @@ dogdone(dogtype dog) {
 		pthread_mutex_lock(&SNUMBAYS);
 		NumBays++;
 		pthread_mutex_unlock(&SNUMBAYS);
-		sem_wait(&SA);
-		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SA);
 		numDA--;
 		if(numDA == 0){
@@ -192,8 +180,6 @@ dogdone(dogtype dog) {
 		NumBays++;
 
 		pthread_mutex_unlock(&SNUMBAYS);
-		sem_wait(&SB);
-		sem_post(&SNUMBAYS);
 		pthread_mutex_lock(&SB);
 		numDB--;
 		if(numDB == 0){
