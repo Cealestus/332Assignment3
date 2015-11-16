@@ -27,6 +27,7 @@ void *create(void *arg){
 }
 
 int main(int argc, char* argv[]){
+	//Create dogs to use for testing
 	dogtype dogA = DA;
 	dogtype dogA2 = DA;
 	dogtype dogB = DB;
@@ -41,6 +42,7 @@ int main(int argc, char* argv[]){
 	dogtype dogO3 = DO;
 	dogtype dogO4 = DO;
 
+	//Create the threads to handle the dogs
 	pthread_t create_dogA;
 	pthread_t create_dogA2;
 	pthread_t create_dogB;
@@ -55,7 +57,11 @@ int main(int argc, char* argv[]){
 	pthread_t create_dogO3;
 	pthread_t create_dogO4;
 
+	//Initialize the system to allow 5 dogs at a time
 	dogwash_init(5);
+
+	//Create all the threads to create dogs
+	//Note that the order is specified to show the affects of starvation
 	pthread_create(&create_dogB, NULL, create, (void*)dogB);
 	pthread_create(&create_dogB2, NULL, create, (void*)dogB2);
 	pthread_create(&create_dogB3, NULL, create, (void*)dogB3);
@@ -70,6 +76,7 @@ int main(int argc, char* argv[]){
 	pthread_create(&create_dogO4, NULL, create, (void*)dogO4);
 	pthread_create(&create_dogB7, NULL, create, (void*)dogB7);
 
+	//Wait until all the threads have completed to run the rest of main()
 	pthread_join(create_dogB, NULL);
 	pthread_join(create_dogB2, NULL);
 	pthread_join(create_dogB3, NULL);
@@ -84,6 +91,7 @@ int main(int argc, char* argv[]){
 	pthread_join(create_dogO4, NULL);
 	pthread_join(create_dogB7, NULL);
 
+	//Let the user know that all the threads have joined and main has continued to run
 	printf("In main after completing\n");
 
 	return 0;
