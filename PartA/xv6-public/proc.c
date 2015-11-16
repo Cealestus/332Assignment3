@@ -14,6 +14,20 @@ struct {
 
 static struct proc *initproc;
 
+
+// hashtable to store the tweets
+struct tweet_t {	
+	char *tag;
+	char *message;
+};
+
+struct hashtable {
+	struct tweet_t **table;
+
+};
+
+
+
 int nextpid = 1;
 extern void forkret(void);
 extern void trapret(void);

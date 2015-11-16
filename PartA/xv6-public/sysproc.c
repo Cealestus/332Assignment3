@@ -90,21 +90,34 @@ sys_uptime(void)
   return xticks;
 }
 
-int
-bput(char *tag, char *message){
+
+
+
+
+int sys_bput(char *tag, char *message){
+
+	if (strlen(tag) == MAXTWEETSAMETAG){
+		return -1;
+	}
+
 	return 0;
 }
 
-int
-put(char *tag, char *message){
+
+int sys_put(char *tag, char *message){
+
+
 	return 0;
 }
 
-int bget(char *tag, char *buf){
+
+int sys_bget(char *tag, char *buf){
+
+
 	return 0;
 }
 
-int
-get(char *tag, char *buf){
+int sys_get(char *tag, char *buf){
+
 	return 0;
 }

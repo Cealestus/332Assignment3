@@ -98,10 +98,10 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
-extern int bput(void);
-extern int put(void);
-extern int bget(void);
-extern int get(void);
+extern int sys_bput(void);
+extern int sys_put(void);
+extern int sys_bget(void);
+extern int sys_get(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
