@@ -1,0 +1,62 @@
+The testing for Part B highlights the functionality of the dog wash program. The Create: DogX part indicates that a dog is about to be added to a wash.
+The Creating: DogX indicates that a dog is currently being created.
+The In DogX indicates that a dog is currently being washed.
+The Dogdone X indicates that a dog has completed washing a dog.
+As can be seen below, the system correctly adds one type of dog, and interacts properly with dogs of type O, but starvation is not handled properly.
+This is the only feature that we can tell is not working properly. When this was tested with other cases, like multiple A's being added, starvation was
+still an issue.
+
+Test written for Part B
+Create: DogB
+Creating DogB
+Create: DogB
+Creating DogB
+Create: DogA
+Creating DogA
+Create: DogB
+Creating DogB
+Create: DogB
+Creating DogB
+Create: DogO
+Create: DogB
+Create: DogO
+Creating DogB
+Creating DogO
+Create: DogO
+Creating DogO
+Creating DogO
+Create: DogB
+Creating DogB
+In DogB
+In DogB
+In DogO
+In DogO
+Create: DogA
+Creating DogA
+In DogB
+Create: DogO
+Creating DogO
+Create: DogB
+Creating DogB
+Dogdone B
+Dogdone O
+Dogdone B
+In DogO
+Dogdone O
+Dogdone B
+In DogO
+In DogB
+In DogB
+In DogB
+Dogdone O
+In DogB
+Dogdone B
+Dogdone O
+Dogdone B
+Dogdone B
+Dogdone B
+In DogA
+In DogA
+Dogdone A
+Dogdone A
+In main after completing

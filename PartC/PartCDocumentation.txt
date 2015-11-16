@@ -1,0 +1,57 @@
+Due to the similarities between part B and part C, the testing was practically the same. Similarly, starvation is still an issue in our Part C implementation.
+The statements in the test have the same meaning as in the Part B implementation.
+
+Test completed for Part C:
+Create: DogB
+Creating DogB
+Create: DogB
+Creating DogB
+Create: DogO
+Creating DogO
+Create: DogA
+Creating DogA
+Create: DogB
+Creating DogB
+Create: DogB
+Creating DogB
+In DogB
+In DogB
+Create: DogB
+Creating DogB
+In DogO
+In DogB
+Create: DogO
+Creating DogO
+Create: DogO
+Creating DogO
+In DogO
+Create: DogA
+Creating DogA
+Create: DogB
+Creating DogB
+Create: DogO
+Creating DogO
+Create: DogB
+Creating DogB
+Dogdone B
+In DogB
+Dogdone B
+Dogdone O
+In DogB
+In DogO
+Dogdone B
+In DogB
+Dogdone O
+In DogB
+Dogdone B
+In DogO
+Dogdone O
+Dogdone B
+Dogdone B
+Dogdone B
+In DogA
+In DogA
+Dogdone O
+Dogdone A
+Dogdone A
+In main after completing
